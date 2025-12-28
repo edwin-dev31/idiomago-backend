@@ -16,6 +16,7 @@ import static com.LinguaNova.IdiomaGo.util.AppRoutes.IMAGES_BASE_URL;
 public class UnsplashService {
 
     private static String accessKey;
+    private static final Random RANDOM = new Random(); // NOSONAR S5547: Used only to select a random number of images
 
     public UnsplashService(@Value("${unsplash.access.key}") String key) {
         UnsplashService.accessKey = key;
@@ -23,9 +24,8 @@ public class UnsplashService {
 
     public static String getImageUrlForWord(String word) {
         RestTemplate restTemplate = new RestTemplate();
-        Random random = new Random();
 
-        int perPage = random.nextInt(50) + 1;
+        int perPage = RANDOM.nextInt(50) + 1;
         String url = IMAGES_BASE_URL + "?query=" + word + "&client_id=" + accessKey + "&per_page=" + perPage;
 
         try {
@@ -57,7 +57,7 @@ public class UnsplashService {
 
             if (results.length() == 0) return null;
 
-            int index = new Random().nextInt(results.length());
+            int index = RANDOM.nextInt(results.length());
             JSONObject image = results.getJSONObject(index);
 
             if (image.has("urls") && image.getJSONObject("urls").has("regular")) {

@@ -3,9 +3,11 @@ package com.LinguaNova.IdiomaGo.config.email;
 import jakarta.mail.Message;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+@Slf4j
 @Component
 public class SimpleEmailSender extends AbstractEmailSender {
 
@@ -26,8 +28,7 @@ public class SimpleEmailSender extends AbstractEmailSender {
 			message.setContent(content, "text/html; charset=utf-8");
 			sendMessage(message);
 		} catch (Exception e) {
-			System.out.println("Error to send email: " + e.getMessage());
-			e.printStackTrace();
+            log.error("Error sending email to: {}", to, e);
 		}
 	}
 

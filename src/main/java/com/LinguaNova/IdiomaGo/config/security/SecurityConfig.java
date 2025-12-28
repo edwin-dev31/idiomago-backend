@@ -34,7 +34,7 @@ public class SecurityConfig {
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
 		return httpSecurity
-			.csrf(csrf -> csrf.disable())
+			.csrf(csrf -> csrf.disable()) // NOSONAR S5870: Disabled because the application is stateless and uses JWT in the Authorization header.
 			.cors(cors -> cors.configurationSource(corsConfigurationSource()))
 			.authorizeHttpRequests(request -> {
 

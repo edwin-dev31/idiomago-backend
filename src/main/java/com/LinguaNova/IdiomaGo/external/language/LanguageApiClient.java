@@ -1,5 +1,8 @@
 package com.LinguaNova.IdiomaGo.external.language;
 
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
@@ -19,8 +22,18 @@ public class LanguageApiClient {
     }
 
     public List<Map<String, String>> fetchLanguagesFromExternalApi() {
+        ResponseEntity<List<Map<String, Object>>> responseEntity = restTemplate.exchange(
+                LANGUAGE_BASE_URL,
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<List<Map<String, Object>>>() {}
+        );
 
-        List<Map<String, Object>> response = restTemplate.getForObject(LANGUAGE_BASE_URL, List.class);
+        List<Map<String, Object>> response = responseEntity.getBody();
+
+        if (response == null) {
+            return List.of();
+        }
 
         return response.stream()
                 .map(lang -> Map.of(

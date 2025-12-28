@@ -1,10 +1,8 @@
 package com.LinguaNova.IdiomaGo.presentation.controller;
 
-import com.LinguaNova.IdiomaGo.persistence.entity.WordEntity;
 import com.LinguaNova.IdiomaGo.presentation.dto.word.CreateWordDTO;
 import com.LinguaNova.IdiomaGo.presentation.dto.word.WordDTO;
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,10 +17,13 @@ import com.LinguaNova.IdiomaGo.service.interfaces.IWordService;
 @RequestMapping("api/word")
 public class WordController {
 
-	@Autowired
-	private IWordService wordService;
+	private final IWordService wordService;
 
-	@GetMapping
+    public WordController(IWordService wordService) {
+        this.wordService = wordService;
+    }
+
+    @GetMapping
 	public List<WordDTO> getAllWords() {
 		return wordService.getAll();
 	}

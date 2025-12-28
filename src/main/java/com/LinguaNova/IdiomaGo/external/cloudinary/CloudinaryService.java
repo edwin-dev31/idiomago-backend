@@ -23,7 +23,7 @@ public class CloudinaryService {
         String folder = "avatars";
 
         String signatureRaw = "folder=" + folder + "&timestamp=" + timestamp + CloudinaryConfig.apiSecret;
-        String signature = DigestUtils.sha1Hex(signatureRaw);
+        String signature = DigestUtils.sha1Hex(signatureRaw); // NOSONAR S4830: SHA-1 is required by Cloudinary API for signature generation
 
         MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
         body.add("file", file.getResource());
@@ -55,7 +55,7 @@ public class CloudinaryService {
     public void delete(String publicId) {
         long timestamp = System.currentTimeMillis() / 1000;
         String signatureRaw = "public_id=" + publicId + "&timestamp=" + timestamp + CloudinaryConfig.apiSecret;
-        String signature = DigestUtils.sha1Hex(signatureRaw);
+        String signature = DigestUtils.sha1Hex(signatureRaw); // NOSONAR S4830: SHA-1 is required by Cloudinary API for signature generation
 
         MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
         body.add("public_id", publicId);

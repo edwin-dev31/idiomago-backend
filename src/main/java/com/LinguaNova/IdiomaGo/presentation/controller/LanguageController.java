@@ -18,10 +18,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("api/language")
 public class LanguageController {
-	@Autowired
-	private ILanguageService service;
 
-	@GetMapping
+	private final ILanguageService service;
+
+    public LanguageController(ILanguageService service) {
+        this.service = service;
+    }
+
+    @GetMapping
 	public List<LanguageEntity> getAll() {
 		return service.getAll();
 	}

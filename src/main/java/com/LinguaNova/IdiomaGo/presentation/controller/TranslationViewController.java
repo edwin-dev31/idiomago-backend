@@ -98,6 +98,7 @@ public class TranslationViewController {
 		return ResponseEntity.ok(translationViewService.searchByPartialExample(partial));
 	}
 
+    @GetMapping("/search/word/{partial}")
 	public ResponseEntity<List<TranslationView>> searchByPartialWord(@PathVariable String partial) {
 		return ResponseEntity.ok(translationViewService.searchByPartialWord(partial));
 	}

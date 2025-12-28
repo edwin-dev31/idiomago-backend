@@ -14,8 +14,11 @@ import java.util.List;
 @RequestMapping("api/category")
 public class CategoryController {
 
-    @Autowired
-    private ICategoryService service;
+    private final ICategoryService service;
+
+    public CategoryController(ICategoryService service) {
+        this.service = service;
+    }
 
     @GetMapping
     public List<CategoryDTO> getAll() {

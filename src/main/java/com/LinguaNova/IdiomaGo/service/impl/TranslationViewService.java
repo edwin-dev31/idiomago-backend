@@ -22,16 +22,15 @@ public class TranslationViewService implements ITranslationViewService {
 
 	private final ITranslationView repository;
 	private final IWordTransalationRepository iWordTransalationRepository;
-
-	@Autowired
-	private AIWordTranslationService aiWordTranslationService;
-	@Autowired
-	private UnsplashService unsplashService;
+	private final AIWordTranslationService aiWordTranslationService;
+	private final UnsplashService unsplashService;
 
 	public TranslationViewService(ITranslationView translationViewRepository,
-	  		IWordTransalationRepository iWordTransalationRepository ) {
+                                  IWordTransalationRepository iWordTransalationRepository, AIWordTranslationService aiWordTranslationService, UnsplashService unsplashService) {
 		this.repository = translationViewRepository;
 		this.iWordTransalationRepository = iWordTransalationRepository;
+        this.aiWordTranslationService = aiWordTranslationService;
+        this.unsplashService = unsplashService;
     }
 
 	@Override
