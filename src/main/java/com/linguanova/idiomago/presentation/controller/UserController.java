@@ -69,7 +69,7 @@ public class UserController {
 	}
 
 	@PutMapping("/{id}/avatar")
-	public ResponseEntity<?> uploadAvatar(@PathVariable Long id, @RequestParam("file") MultipartFile file) {
+	public ResponseEntity<Object> uploadAvatar(@PathVariable Long id, @RequestParam("file") MultipartFile file) {
 		UserDTO user = userService.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("User not found"));
 

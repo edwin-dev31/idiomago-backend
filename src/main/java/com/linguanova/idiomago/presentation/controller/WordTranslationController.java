@@ -42,7 +42,7 @@ public class WordTranslationController {
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<?> updateTranslation(@PathVariable Long id,
+	public ResponseEntity<Object> updateTranslation(@PathVariable Long id,
 											   @RequestBody UpdateWordTranslationDTO dto) {
 		try {
 			WordTranslationDTO updated = service.update(id, dto);
@@ -57,7 +57,7 @@ public class WordTranslationController {
 	}
 
 	@DeleteMapping("/{id}")
-	public ResponseEntity<?> deleteTranslation(@PathVariable Long id,
+	public ResponseEntity<Object> deleteTranslation(@PathVariable Long id,
 											   @RequestParam Long userId) {
 		try {
 			service.delete(id, userId);

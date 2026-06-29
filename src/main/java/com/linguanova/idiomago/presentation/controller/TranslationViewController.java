@@ -40,7 +40,7 @@ public class TranslationViewController {
 	}
 
 	@PostMapping("/save/word/multiple")
-	public ResponseEntity<?> saveMultipleWords(@RequestBody CreateMultipleWordTranslationDTO dto) {
+	public ResponseEntity<Object> saveMultipleWords(@RequestBody CreateMultipleWordTranslationDTO dto) {
 		List<TranslationView> results = dto.getLanguageCodes().stream()
 				.map(code -> {
 					SaveMultipleWordTranslationDTO singleDTO = new SaveMultipleWordTranslationDTO(
@@ -59,7 +59,7 @@ public class TranslationViewController {
 
 
 	@PostMapping("/save/word/single")
-	public ResponseEntity<?> saveSingleWords(@RequestBody SaveSingleWordTranslationDTO newTranslation) {
+	public ResponseEntity<Object> saveSingleWords(@RequestBody SaveSingleWordTranslationDTO newTranslation) {
 		List<TranslationView> result = translationViewService.saveSingleWords(newTranslation);
 		if (result == null) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No translations found.");

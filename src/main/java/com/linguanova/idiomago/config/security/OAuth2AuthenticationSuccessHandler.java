@@ -35,21 +35,18 @@ public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccess
 
         String email = null;
         String username = null;
+        final String EMAIL_ATTRIBUTE = "email";
 
         switch (registrationId) {
             case "github":
-                email = oAuth2User.getAttribute("email");
+                email = oAuth2User.getAttribute(EMAIL_ATTRIBUTE);
                 username = oAuth2User.getAttribute("login");
                 if (email == null) {
                     email = username + "@github.local";
                 }
                 break;
-            case "google":
-                email = oAuth2User.getAttribute("email");
-                username = oAuth2User.getAttribute("name");
-                break;
-            case "facebook":
-                email = oAuth2User.getAttribute("email");
+            case "google", "facebook":
+                email = oAuth2User.getAttribute(EMAIL_ATTRIBUTE);
                 username = oAuth2User.getAttribute("name");
                 break;
             default:

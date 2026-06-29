@@ -35,6 +35,7 @@ public class AuthController {
 	private final EmailVerificationService emailVerificationService;
 	private final UpdateUserMapper updateUserMapper;
 
+    private static final String MESSAGE_KEY = "message";
 	public AuthController(AuthenticationManager authManager, JwtUtil jwtUtil,
                           UserDetailsService userDetailsService, IUserService userService,
                           EmailVerificationService emailVerificationService, PasswordEncoder passwordEncoder, UpdateUserMapper updateUserMapper) {
@@ -47,7 +48,7 @@ public class AuthController {
     }
 
 	@PostMapping("/login")
-	public ResponseEntity<?> login(@RequestBody AuthRequest request) {
+	public ResponseEntity<Object> login(@RequestBody AuthRequest request) {
 		Optional<UserEntity> optionalUser = userService.findByEmail(request.getEmail());
 		UserEntity user = optionalUser.orElseThrow(() ->
 				new ResourceNotFoundException("User not found: " + request.getEmail()));
@@ -55,10 +56,8 @@ public class AuthController {
 		if (!Boolean.TRUE.equals(user.getVerified())) {
 			return ResponseEntity
 					.status(403)
-					.body(Map.of("message", "You must verify your email before logging in."));
+					.body(Map.of(MESSAGE_KEY, "You must verify your email before logging in."));
 		}
-
-		System.out.println("Hola: " + request.getEmail() +"  " +request.getPassword());
 		var auth = new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword());
 		authManager.authenticate(auth);
 
@@ -69,20 +68,20 @@ public class AuthController {
 	}
 
 	@PostMapping("/register")
-	public ResponseEntity<?> register(@Valid @RequestBody CreateUserDTO dto) {
+	public ResponseEntity<Map<String, String>> register(@Valid @RequestBody CreateUserDTO dto) {
 		Optional<UserEntity> existing = userService.findByEmail(dto.getEmail());
 
 		if (existing.isPresent()) {
 			UserEntity user = existing.get();
 			if (Boolean.TRUE.equals(user.getVerified())) {
 				return ResponseEntity.badRequest().body(Map.of(
-						"message", "This email is already registered and verified."
+                        MESSAGE_KEY, "This email is already registered and verified."
 				));
 			} else {
 				String token = jwtUtil.generateToken(user.getEmail());
 				emailVerificationService.sendVerificationEmail(user.getEmail(), user.getUsername(), token);
 				return ResponseEntity.ok(Map.of(
-						"message", "You're already registered. We have resent the verification email."
+                        MESSAGE_KEY, "You're already registered. We have resent the verification email."
 				));
 			}
 		}
@@ -93,19 +92,20 @@ public class AuthController {
 		emailVerificationService.sendVerificationEmail(dto.getEmail(), dto.getUsername(), token);
 
 		return ResponseEntity.ok(Map.of(
-				"message", "Successful registration. Please check your email to activate your account."
+                MESSAGE_KEY, "Successful registration. Please check your email to activate your account."
 		));
 	}
 
 	@PostMapping("/logout")
-	public ResponseEntity<?> logout(HttpServletResponse response) {
-		return ResponseEntity.ok(Map.of("message", "Sesión cerrada"));
+	public ResponseEntity<Map<String, String>> logout(HttpServletResponse response) {
+		return ResponseEntity.ok(Map.of(MESSAGE_KEY, "Sesión cerrada"));
 	}
 
 	@GetMapping("/verify-email")
-	public ResponseEntity<?> verifyEmail(@RequestParam String token) {
-		if (!jwtUtil.validateToken(token)) {
-			return ResponseEntity.status(302).header("Location", FRONTEND_BASE_URL + "/email-verification?status=invalid").build();
+	public ResponseEntity<Map<String, String>> verifyEmail(@RequestParam String token) {
+        final String MESSAGE_KEY_LOCATION = "Location";
+        if (!jwtUtil.validateToken(token)) {
+            return ResponseEntity.status(302).header(MESSAGE_KEY_LOCATION, FRONTEND_BASE_URL + "/email-verification?status=invalid").build();
 		}
 
 		String email = jwtUtil.extractEmail(token);
@@ -113,17 +113,14 @@ public class AuthController {
 				.orElseThrow(() -> new ResourceNotFoundException("User not found with email: " + email));
 
 		if (Boolean.TRUE.equals(user.getVerified())) {
-			return ResponseEntity.status(302).header("Location", FRONTEND_BASE_URL + "/email-verification?status=already").build();
+			return ResponseEntity.status(302).header(MESSAGE_KEY_LOCATION, FRONTEND_BASE_URL + "/email-verification?status=already").build();
 		}
 
 		user.setVerified(true);
 		userService.update(user.getId(), updateUserMapper.mapTo(user));
 
-		return ResponseEntity.status(302).header("Location", FRONTEND_BASE_URL + "/email-verification?status=success").build();
+		return ResponseEntity.status(302).header(MESSAGE_KEY_LOCATION, FRONTEND_BASE_URL + "/email-verification?status=success").build();
 	}
-
-
-
 }
 
 

@@ -28,7 +28,7 @@ public class ReactionController {
     }
 
     @GetMapping("/word/{wordId}")
-    public ResponseEntity<?> getByWordTranslation(@PathVariable Long wordId) {
+    public ResponseEntity<Object> getByWordTranslation(@PathVariable Long wordId) {
         List<ReactionDTO> reactions = service.getByWordTranslationId(wordId);
         if (reactions.isEmpty()) {
             return ResponseEntity.status(404).body(new ErrorResponse("No reactions were found for the word"));
@@ -37,7 +37,7 @@ public class ReactionController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable Long id) {
+    public ResponseEntity<Object> delete(@PathVariable Long id) {
         boolean deleted = service.delete(id);
         if (deleted) {
             return ResponseEntity.noContent().build(); // 204

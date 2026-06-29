@@ -14,10 +14,9 @@ public class OpenAIService {
 
     private static String apiKey;
 
-    public OpenAIService(@Value("${OPENAI_API_KEY}") String key) {
+    public OpenAIService(@Value("${openai.api.key}") String key) {
         OpenAIService.apiKey = key;
     }
-
 
     private static final String MODEL = "gpt-4.1-nano";
 

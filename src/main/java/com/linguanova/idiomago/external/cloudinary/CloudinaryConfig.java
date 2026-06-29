@@ -11,9 +11,9 @@ public class CloudinaryConfig {
     public static String apiSecret;
 
     public CloudinaryConfig(
-            @Value("${CLOUDINARY_CLOUD_NAME}") String name,
-            @Value("${CLOUDINARY_API_KEY}") String key,
-            @Value("${CLOUDINARY_API_SECRET}") String secret) {
+            @Value("${cloudinary.cloud.name}") String name,
+            @Value("${cloudinary.api.key}")  String key,
+            @Value("${cloudinary.api.secret}")  String secret) {
         CloudinaryConfig.cloudName = name;
         CloudinaryConfig.apiKey = key;
         CloudinaryConfig.apiSecret = secret;
