@@ -1,8 +1,13 @@
 package com.linguanova.idiomago.util;
 
 public class AppRoutes {
-    public static final String BACKEND_BASE_URL = "https://idiomago.koyeb.app/idiomago";
-    public static final String FRONTEND_BASE_URL = "https://delightful-field-0bf6cfa0f.2.azurestaticapps.net";
+    private static String getEnvOrDefault(String key, String defaultValue) {
+        String value = System.getenv(key);
+        return value != null ? value : defaultValue;
+    }
+
+    public static final String BACKEND_BASE_URL = getEnvOrDefault("BACKEND_BASE_URL", "http://localhost:1731/idiomago");
+    public static final String FRONTEND_BASE_URL = getEnvOrDefault("FRONTEND_BASE_URL", "http://localhost:5173");
 
     public static final String VERIFY_EMAIL_ENDPOINT = BACKEND_BASE_URL + "/auth/verify-email?token=";
     public static final String FRONTEND_REDIRECTION_URL = FRONTEND_BASE_URL + "/oauth2-success?token=";
