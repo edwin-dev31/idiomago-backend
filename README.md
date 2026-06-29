@@ -38,6 +38,15 @@ Backend for a language learning platform built with **Spring Boot 3** and **Java
 | **OpenAI API** | AI vocabulary generation |
 | **Docker** | Containerization |
 
+## Environment Variables
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `BACKEND_BASE_URL` | `http://localhost:1731/idiomago` | Backend API base URL |
+| `FRONTEND_BASE_URL` | `http://localhost:5173` | Frontend app URL for CORS and redirects |
+
+Set these in your environment or via `application-prod.properties`.
+
 ## Prerequisites
 
 - JDK 17+
